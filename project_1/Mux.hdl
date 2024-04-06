@@ -1,0 +1,16 @@
+/**
+    multiplexor / selector
+
+    if sel == 0, return a, else return b
+*/
+
+CHIP Mux {
+    IN a, b, sel;
+    OUT out;
+
+    PARTS:
+        Not(in=sel, out=notSel);
+        Nand(a=a, b=notSel, out=gateA);
+        Nand(a=b, b=sel, out=gateB);
+        Nand(a=gateA, b=gateB, out=out);
+}

@@ -1,0 +1,17 @@
+
+CHIP Mux8Way16 {
+    IN a[16], b[16], c[16], d[16], e[16], f[16], g[16], h[16], sel[3];
+    OUT out[16];
+
+    PARTS:
+        // tournament.
+        Mux16(a=a, b=b, sel=sel[0], out=firstA);
+        Mux16(a=c, b=d, sel=sel[0], out=firstB);
+        Mux16(a=e, b=f, sel=sel[0], out=firstC);
+        Mux16(a=g, b=h, sel=sel[0], out=firstD);
+
+        Mux16(a=firstA, b=firstB, sel=sel[1], out=secondA);
+        Mux16(a=firstC, b=firstD, sel=sel[1], out=secondB);
+
+        Mux16(a=secondA, b=secondB, sel=sel[2], out=out);
+}

@@ -1,0 +1,28 @@
+
+
+CHIP DMux4Way {
+    IN in, sel[2];
+    OUT a, b, c, d;
+
+    PARTS:
+        Not(in=sel[0], out=notSelZero);
+        Not(in=sel[1], out=notSelOne);
+
+        // for output into the a channel, sel must be 00
+        And(a=notSelOne, b=notSelZero, out=selA);
+
+        // for output into the b channel, sel must be 01
+        And(a=notSelOne, b=sel[0], out=selB);
+
+        // for output into the c channel, sel must be 10
+        And(a=sel[1], b=notSelZero, out=selC);
+
+        // for output into the d channel, sel must be 11
+        And(a=sel[1], b=sel[0], out=selD);
+
+        // use and gates
+        And(a=in, b=selA, out=a);
+        And(a=in, b=selB, out=b);
+        And(a=in, b=selC, out=c);
+        And(a=in, b=selD, out=d);
+}

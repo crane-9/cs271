@@ -1,0 +1,20 @@
+/**
+demultiplexor. opposite of a multiplexor.
+
+selector determines the used output instead of the used input
+*/
+
+CHIP DMux {
+    IN in, sel;
+    OUT a, b;
+
+    PARTS:
+        // for output into the a channel, selection must be 0
+        Not(in=sel, out=notSel);
+        And(a=in, b=notSel, out=a);
+
+        // for output into the b channel, selection must be 1
+        And(a=in, b=sel, out=b);
+
+        // use of AND gates works because if there is no signal to output [ie, 0], it matches the default output of 0.
+}

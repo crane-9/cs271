@@ -1,0 +1,19 @@
+
+CHIP Or8Way {
+    IN in[8];
+    OUT out;
+
+    PARTS:
+        // we're doing this tournament style
+        Or(a=in[0], b=in[1], out=tier1a);
+        Or(a=in[2], b=in[3], out=tier1b);
+        Or(a=in[4], b=in[5], out=tier1c);
+        Or(a=in[6], b=in[7], out=tier1d);
+
+        // tier 2
+        Or(a=tier1a, b=tier1b, out=tier2a);
+        Or(a=tier1c, b=tier1d, out=tier2b);
+
+        // final
+        Or(a=tier2a, b=tier2b, out=out);
+}
