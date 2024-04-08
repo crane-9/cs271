@@ -1,4 +1,8 @@
+/**
+    4-Way DMux
 
+    This gate uses 2 bits to determine which of four channels the input is routed to.
+*/
 
 CHIP DMux4Way {
     IN in, sel[2];

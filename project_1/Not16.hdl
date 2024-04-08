@@ -1,4 +1,10 @@
-/** NOT x 16 :] yay */
+/** 
+    16-bit NOT
+    This gate inverts input, bit-by-bit.
+
+    Ex.
+    1011 1001 0110 1010 -> 0100 0110 1001 0101
+*/
 
 CHIP Not16 {
     IN in[16];

@@ -1,3 +1,9 @@
+/**
+    16-bit OR
+
+    This gate operates on the two 16-bit inputs by comparing them bit-by-bit with a single-bit OR gate.
+*/
+
 
 CHIP Or16 {
     IN a[16], b[16];

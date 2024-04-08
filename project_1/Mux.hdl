@@ -1,8 +1,13 @@
 /**
-    multiplexor / selector
+    Multiplexor / Selector
 
-    if sel == 0, return a, else return b
+    A single-bit selector decides whether to output the signal from input A or B.
+
+    011 -> 1
+    010 -> 0
+    110 -> 1
 */
+
 
 CHIP Mux {
     IN a, b, sel;

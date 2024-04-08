@@ -1,7 +1,11 @@
 /**
-demultiplexor. opposite of a multiplexor.
+    Demultiplexor. 
 
-selector determines the used output instead of the used input
+    The selector determines the routed output, rather than the utilized input.
+
+    01 -> 00 
+    10 -> 10
+    11 -> 01
 */
 
 CHIP DMux {

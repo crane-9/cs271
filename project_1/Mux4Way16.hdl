@@ -1,10 +1,19 @@
+/**
+    4-Way 16-bit Multiplexor
+
+    This chip takes four 16-bit inputs, and uses a 2-bit selector to decide which input will be routed to output.
+*/
+
 
 CHIP Mux4Way16 {
     IN a[16], b[16], c[16], d[16], sel[2];
     OUT out[16];
 
     PARTS:
+        // pins 'e' and 'f' are determined by the first selector bit
         Mux16(a=a, b=b, sel=sel[0], out=e);
         Mux16(a=c, b=d, sel=sel[0], out=f);
+
+        // out is decided by the second selector bit, chosing between pins 'e' and 'f'
         Mux16(a=e, b=f, sel=sel[1], out=out);
 }

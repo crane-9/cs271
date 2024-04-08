@@ -1,6 +1,11 @@
 /**
-OR
-out = 1 if a or b is 1
+    OR
+    
+    This is a simple 1-bit OR gate. 
+
+    11 -> 1
+    01 -> 1
+    00 -> 0
 */
 
 CHIP Or {

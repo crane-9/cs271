@@ -1,6 +1,10 @@
-/**  */
+/**
+    16-bit Multiplexor
 
-// should i be making a nand16??
+    This chip returns a 16-bit output selected from the two sixteen-bit inputs.
+    This is implemented bit-by-bit.
+*/
+
 
 CHIP Mux16 {
     IN a[16], b[16], sel;

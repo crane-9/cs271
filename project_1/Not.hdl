@@ -1,5 +1,11 @@
-// NOT gate
-// OUT = not IN
+/**
+    NOT
+
+    This is a simple not gate, the single-bit output is the inverse of the single-bit input.
+    1 -> 0
+    0 -> 1
+*/
+
 
 CHIP Not {
     IN in;

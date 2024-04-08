@@ -1,3 +1,9 @@
+/**
+    8-Way DMux
+
+    This chip uses a 3-bit selector to determine which of 8 outputs is utilized.
+*/
+
 
 CHIP DMux8Way {
     IN in, sel[3];

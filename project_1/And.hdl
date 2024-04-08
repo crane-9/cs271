@@ -1,13 +1,9 @@
-// AND gate
-/*
+/**
+    AND gate.
+    Compares two single-bit inputs and only outputs a signal if both inputs are active.
 
- a | b | out
- -----------
- 0 | 0 | 0
- 0 | 1 | 0
- 1 | 0 | 0
- 1 | 1 | 1
-
+    11 -> 1
+    01 -> 0
 */
 
 CHIP And {

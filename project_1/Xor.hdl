@@ -1,12 +1,11 @@
 /**
-XOR chip
+    XOR 
 
- a | b | out
- -----------
- 0 | 0 | 0
- 0 | 1 | 1
- 1 | 0 | 1
- 1 | 1 | 0
+    Single-bit XOR gate. Only gives output if input A and B are different.
+    
+    00 -> 0
+    11 -> 0
+    10 -> 1
 */
 
 

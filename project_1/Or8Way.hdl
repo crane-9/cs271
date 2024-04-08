@@ -1,3 +1,9 @@
+/**
+    8-Way OR 
+
+    This chip takes an 8-bit input, and outputs a single bit if any of the 8 input channels are active.
+*/
+
 
 CHIP Or8Way {
     IN in[8];
