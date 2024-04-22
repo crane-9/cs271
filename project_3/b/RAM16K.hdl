@@ -1,0 +1,22 @@
+/**
+    RAM16K
+
+    This is a 16-bit width RAM with 16K registers.
+    Rinse and repeat process from RAM4K, however with only 4 sub-RAM chips.
+*/
+
+
+CHIP RAM16K {
+    IN in[16], load, address[14];
+    OUT out[16];
+
+    PARTS:
+        DMux4Way(in=load, sel=address[0..1], a=loadA, b=loadB, c=loadC, d=loadD);
+
+        RAM4K(in=in, load=loadA, address=address[2..13], out=valA);
+        RAM4K(in=in, load=loadB, address=address[2..13], out=valB);
+        RAM4K(in=in, load=loadC, address=address[2..13], out=valC);
+        RAM4K(in=in, load=loadD, address=address[2..13], out=valD);
+
+        Mux4Way16(a=valA, b=valB, c=valC, d=valD, sel=address[0..1], out=out);
+}

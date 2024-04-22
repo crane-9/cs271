@@ -1,0 +1,53 @@
+/**
+    16-bit program counter chip.
+
+    This chip outputs the value of a single 18-bit register.
+    The various inputs can be used to alter the contents of the register.
+    The operations load, increment, and reset, are prioritized as specified:
+        - Reset takes priority.
+        - Load takes second priority.
+        - Increment is least important.
+    I use a Mux8Way16 to implement this logic. It took some drawing and thought, as I split the 3-bit selector between the 3 inputs.
+
+    R | L | I |>| LOAD |  OP 
+    ===========================
+    0   0   0      0     none*
+    0   0   1      1     incr
+    0   1   0      1     load
+    0   1   1      1     load
+    1   0   0      1     reset
+    1   0   1      1     reset
+    1   1   0      1     reset
+    1   1   1      1     reset
+
+    This table illustrates that there is:
+        - Only one condition by which the Mux should output the incremented value.
+        - Two conditions on which the Mux should output the "in" value.
+        - Four conditions on which the Mux should output a blank function.
+
+    This value is taken to the Register's "in" pin.
+
+    *When there is no output, the Register's "load" pin *will* be false, it is impossible for it to be true. So while this value is technically no different than "reset", it is more of a "void".
+*/
+
+CHIP PC {
+    IN in[16], load, inc, reset;
+    OUT out[16];
+
+    PARTS:
+        // increment value, may or may not be used.
+        Inc16(in=regOut, out=plusOne);
+
+        // is there anything to load? yes no?
+        // using an 8-way OR as the empty inputs have no effect.
+        Or8Way(in[0]=reset, in[1]=load, in[2]=inc, out=doLoad);
+
+        // prioritize reset
+        // then load
+        // then increment.
+        Mux8Way16(b=plusOne, c=in, d=in, sel[0]=inc, sel[1]=load, sel[2]=reset, out=reg);
+
+        // register
+        Register(in=reg, load=doLoad, out=regOut, out=out);
+
+}

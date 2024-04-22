@@ -1,0 +1,29 @@
+/**
+    RAM 8
+
+    This is a 16-bit width RAM with 8 registers.
+    
+    This 8byte ram is similar/operates similarly to a register, being built of 8. 
+*/
+
+
+CHIP RAM8 {
+    IN in[16], load, address[3];
+    OUT out[16];
+
+    PARTS:
+        // routing 
+        DMux8Way(in=load, sel=address, a=loadA, b=loadB, c=loadC, d=loadD, e=loadE, f=loadF, g=loadG, h=loadH);
+
+        Register(in=in, load=loadA, out=valA);
+        Register(in=in, load=loadB, out=valB);
+        Register(in=in, load=loadC, out=valC);
+        Register(in=in, load=loadD, out=valD);
+        Register(in=in, load=loadE, out=valE);
+        Register(in=in, load=loadF, out=valF);
+        Register(in=in, load=loadG, out=valG);
+        Register(in=in, load=loadH, out=valH);
+
+        // selector
+        Mux8Way16(a=valA, b=valB, c=valC, d=valD, e=valE, f=valF, g=valG, h=valH, sel=address, out=out);
+}

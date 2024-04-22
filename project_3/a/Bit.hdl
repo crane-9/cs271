@@ -1,0 +1,14 @@
+/**
+    This is a single-bit register.
+
+    Following the drawing on page 43, this uses a single one-bit Mux and a data flip-flop, as it is a sequential chip.
+*/
+
+CHIP Bit {
+    IN in, load;
+    OUT out;
+
+    PARTS:
+        Mux(a=cycle, b=in, sel=load, out=flipFlop);
+        DFF(in=flipFlop, out=out, out=cycle);
+}
