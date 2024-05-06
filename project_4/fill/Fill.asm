@@ -43,7 +43,7 @@ M=0
 
     // fill in next pixel
     A=D
-    M=1
+    M=-1
 
     // always hop back to the start of the loop
     @LOOP
