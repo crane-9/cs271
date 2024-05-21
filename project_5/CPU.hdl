@@ -28,7 +28,7 @@
 CHIP CPU {
 
     IN  inM[16],         // M value input  (M = contents of RAM[A])
-        instruction[16], // Instruction for execution
+        instruction[16], // Instruction for execution       ixxa cccc ccdd djjj
         reset;           // Signals whether to re-start the current
                          // program (reset==1) or continue executing
                          // the current program (reset==0).
@@ -39,5 +39,21 @@ CHIP CPU {
         pc[15];          // address of next instruction
 
     PARTS:
-    // Put your code here:
+        // a or c intruction
+        Not(in=instruction[15], out=instructA);
+        Not(in=instructA, out=instructC);
+
+        // missing bits.
+        Mux16(a=ALUOut, b=instruction, sel=, out=inA);
+
+        // missing bits.
+        ARegister(in=inA, load=loadA, out=outA, out[0..14]=addressM);
+        DRegister(in=ALUOut, load=, out=ALUx);
+
+        Mux16(a=outA, b=inM, sel=, out=ALUy);
+
+        ALU(x=ALUx, y=ALUy, zx=, nx=, zy=, ny=, f=, no=, out=outM, out=ALUOut, zr=, ng=);
+
+        // missing bits
+        PC(in=outA, load=, inc=, reset=reset, out[0..14]=pc);
 }
