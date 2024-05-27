@@ -1,3 +1,4 @@
+#!usr/bin/env python
 """
 Module contains a single class for the assembler's `SymbolicTable`, which serves to keep track of the input script's defined and pre-defined variables.
 """

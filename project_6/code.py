@@ -1,3 +1,4 @@
+#!usr/bin/env python
 """
 This module translates Hack into binary code.
 "Bits" are written as strings, as they ultimately will be written to a file as symbols. (right?)
