@@ -106,7 +106,7 @@ class Parser:
             # Final validation.
             if not is_decimal and (char in ALLOWED_CHARS or char.isalnum()):
                 sym += char
-            
+
             elif is_decimal and char.isdecimal():
                 sym += char
 
@@ -116,21 +116,38 @@ class Parser:
         return sym
 
 
+    def __c_command_parser(self, char: str, idx: int) -> str:
+        """
+        This is a helper parser for c command mnemonics. Implemented to cut down on repetition between `dest()` and `jump()`
+        :param char: The character at which to split the current command.
+        :param idx: The index to return of the split string (recommend 0 or -1 for clear 'first' or 'last').
+        """
+        # If no character present, no dest mnemonic is present.
+        if char not in self.current_command:  return ""
+
+        # Else split and strip.
+        return self.current_command.split(char)[idx].strip()
+
     def dest(self) -> str:
         """
         Called only when `command_type() -> C_COMMAND`.
         :returns: The `dest` mnemonic (A, AM, DM, AMD, etc...).
         """
+        return self.__c_command_parser('=', 0)
 
     def comp(self) -> str:
         """
         Called only when `command_type() -> C_COMMAND`.
         :returns: The `comp` mnemonic (0, 1, -1, D, A, !A, etc...)
         """
+        # Split and strip and split and strip.
+        return self.current_command.split(';')[0].strip().split('=')[-1].strip()
 
-    def jump(self) -> str | None:
+
+    def jump(self) -> str:
         """
         Finds and parses the `jump` mnemoic of the current C command.
         Called only when `command_type() -> C_COMMAND`.
         :returns: The `jump` mnemonic (JMP, JLE, JGT, etc...)
         """
+        return self.__c_command_parser(';', -1)
