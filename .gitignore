@@ -4,3 +4,7 @@
 *.hack
 
 /.vscode
+.venv
+venv
+
+project_6/**/*.asm
