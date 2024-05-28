@@ -76,7 +76,7 @@ def second_pass(table: SymbolicTable) -> list[str]:
                     value = table.get_address(symbol)
 
                 # Generate binary and output.
-                binary = bin(value)[2:].zfill(15)
+                binary = bin(value)[2:].zfill(15)[-15:]  # Truncate
                 out_lines.append(f"0{binary}")
     
     return out_lines

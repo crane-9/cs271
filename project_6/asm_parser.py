@@ -24,7 +24,7 @@ class Parser:
         This cosntructor opens the file and prepares parsing.
         :param input_file: Path to the given input file.
         """
-        self.line_idx = -1
+        self.line_idx = 0
         self.current_command = ""  # Empty initial command.
 
         # Track input line separately for the sake of errors being accurate to the source code.
@@ -36,7 +36,7 @@ class Parser:
 
     def hasMoreCommands(self) -> bool:
         """
-        Checks if there are more commands in the input file to parse.
+        Checks if there are more commands in the input file to parse by positioning the next command line at the front of the list.
         Skips comments and empty lines.
         :return: True if there are more lines to parse.
         """
@@ -74,6 +74,7 @@ class Parser:
         self.input_line += 1 
         self.current_command = self.lines.pop(0).split('//')[0].strip()
 
+        # If not pseudocommand, add to line index.
         if self.command_type() != CommandType.L_COMMAND:
             self.line_idx += 1
 
