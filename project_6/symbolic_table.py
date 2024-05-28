@@ -26,16 +26,21 @@ class SymbolicTable:
         # Procedurally add R0 - R15
         self.__table.update({f'R{idx}': idx for idx in range(0, 16)})
 
-    def add_entry(self, symbol: str, addr: int) -> None:
+        self.next_var = 1024
+
+    def add_entry(self, symbol: str, addr: int = None) -> None:
         """
         Adds the pair to the table.
         :param symbol: The "variable name" or symbolic name of the value.
-        :param addr: The numerical address to link to the symbol.
+        :param addr: The numerical address to link to the symbol. If missing, will automatically populate
         """
         if self.contains(symbol):
             raise SymbolicTableError(f"Symbol '{symbol}' already exists.")
+
+        self.__table[symbol] = addr or self.next_var
         
-        self.__table[symbol] = addr
+        if addr is None:
+            self.next_var += 1
 
     def contains(self, symbol: str) -> bool:
         """

@@ -7,6 +7,7 @@ import sys
 
 import asm_code as c
 from asm_parser import Parser, CommandType 
+import errors
 from symbolic_table import SymbolicTable
 
 
@@ -36,8 +37,8 @@ def first_pass() -> SymbolicTable:
         if parser.command_type() != CommandType.L_COMMAND:
             continue
 
-        if parser.current_command[0] + parser.current_command [-1] == "()":
-            table.add_entry(parser.symbol(), parser.line_idx)
+        table.add_entry(parser.symbol(), parser.line_idx)
+        
 
     return table
 
@@ -51,35 +52,52 @@ def second_pass(table: SymbolicTable) -> list[str]:
 
     while parser.hasMoreCommands():
         parser.advance()
-        print(parser.current_command)
 
-        # Handle C-commands.
-        if parser.command_type() is CommandType.C_COMMAND: 
-            dest = c.dest(parser.dest())
-            comp = c.comp(parser.comp())
-            jump = c.jump(parser.jump())
-            out_lines.append(f"111{dest}{comp}{jump}")
+        match parser.command_type():
+            # Handle C-commands.
+            case CommandType.C_COMMAND: 
+                dest = c.dest(parser.dest())
+                comp = c.comp(parser.comp())
+                jump = c.jump(parser.jump())
+                out_lines.append(f"111{comp}{dest}{jump}")
 
-        # Handle other commands -- only appending if A-command.
-        else:
-            symbol = parser.symbol()
-            out_lines.append(f"0{symbol}")
+            # Handle A-commands.
+            case CommandType.A_COMMAND:
+                symbol = parser.symbol()
 
-        print(out_lines[-1])
+                # If decimal, literal. Else check if it exists and auto-populate if not.
+                if symbol.isdecimal():
+                    value = int(symbol)
+                
+                elif not table.contains(symbol):
+                    table.add_entry(symbol, None)
+
+                # If not decimal, get value.
+                if not symbol.isdecimal(): 
+                    value = table.get_address(symbol)
+
+                # Generate binary and output.
+                binary = bin(value)[2:].zfill(15)
+                out_lines.append(f"0{binary}")
     
     return out_lines
     
 
 def main() -> None:
     """
-    Runs the parsing process, printing each line to file.
+    Runs a two-pass parsing routine, then prints the results to file.
     """
-    parser = Parser(IN_PATH)
-
+    print("First pass...")
     table = first_pass()
+
+    print("Second pass...")
     out_lines = second_pass(table)
 
+    
     # Then save to file...
+    print(f"Saving to '{OUT_PATH}'") 
+    with open(OUT_PATH, 'w') as fp:
+        fp.writelines([l + '\n' for l in out_lines])
 
 
 if __name__ == "__main__":
