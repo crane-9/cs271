@@ -21,7 +21,7 @@ def dest(mnemonic: str) -> str:
 
     for char in mnemonic:
         # Raise error on unexpected character.
-        if char not in "AMD":  raise CodeError(f"Unexpected character in 'dest' token: {char}")
+        if char not in "AMD":  raise CodeError(f"Unexpected character in 'dest' token: '{char}'")
 
         # Simple repetition.
         dest_a = dest_a or char == "A"
@@ -36,6 +36,33 @@ def comp(mnemonic: str) -> str:
     Translates the `comp` mnemonic string to a string of 7 bits.
     :returns: 7 bits as a string.
     """
+    def get_bits() -> str:
+        """ Massive switch statement to return the 6 c-bits. """
+        match mnemonic:
+            case '0':  return '101010'
+            case '1':  return '111111'
+            case '-1':  return '111010' 
+            case 'D':  return '001100'
+            case ['A', 'M']:  return '110000'
+            case '!D':  return '001101'
+            case ['!A', '!M']:  return '110001'
+            case '-D':  return '001111'
+            case ['-A', '-M']:  return '110011'
+            case 'D+1':  return '011111'
+            case ['A+1', 'M+1']:  return '110111'
+            case 'D-1':  return '001110'
+            case ['A-1', 'M-1']:  return '110010'
+            case ['D+A', 'D+M']:  return '000010'
+            case ['D-A', 'D-M']:  return '010011'
+            case ['A-D', 'M-D']:  return '000111'
+            case ['D&A', 'D&M']:  return '000000'
+            case ['D|A', 'D|M']:  return '010101'
+
+            case _:
+                raise CodeError(f"Comp token '{mnemonic}' could not be interpreted.")
+        
+        # Concatenate a-bit status beside `get_bits()` result
+        return f"{int('M' in mnemonic)}{get_bits()}"
 
 
 
@@ -44,4 +71,16 @@ def jump(mnemonic: str) -> str:
     Translates the `jump` mnemonic string to a string of 3 bits.
     :returns: 3 bits as a string.
     """
-    
+    match mnemonic:
+        case '':  return '000'
+        case 'JGT':  return '001'
+        case 'JEQ':  return '010'
+        case 'JGE':  return '011'
+        case 'JLT':  return '100'
+        case 'JNE':  return '101'
+        case 'JLE':  return '110'
+        case 'JMP':  return '111'
+
+        case _: 
+            raise CodeError(f"Jump token '{mnemonic}' could not be interpreted.")
+        

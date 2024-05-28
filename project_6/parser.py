@@ -8,9 +8,9 @@ class CommandType(Enum):
     """
     Three command types.
     """
-    A_COMMAND  # Command changes the A-reg value (@Xxx)
-    C_COMMAND  # Command follows the scheme dest=comp;jump
-    L_COMMAND  # Pseudo-command.
+    A_COMMAND = 1  # Command changes the A-reg value (@Xxx)
+    C_COMMAND = 2  # Command follows the scheme dest=comp;jump
+    L_COMMAND = 3  # Pseudo-command.
 
 
 class Parser:
