@@ -24,8 +24,11 @@ class Parser:
         This cosntructor opens the file and prepares parsing.
         :param input_file: Path to the given input file.
         """
-        self.current_line = 0
+        self.line_idx = -1
         self.current_command = ""  # Empty initial command.
+
+        # Track input line separately for the sake of errors being accurate to the source code.
+        self.input_line = 0
         
         # Retrieve all lines.
         with open(input_file, 'r') as fp:
@@ -45,15 +48,15 @@ class Parser:
             # Check if comment.
             if line.startswith("//"):  return False
             # Return not empty status.
-            return line is not ""
+            return line != ""
             
         
         # Cycle through lines until a valid line is found.
         while len(self.lines) > 0:
             # Check: ignore comments and whitespace
             if not is_command_line(self.lines[0]):
-                self.current_line += 1
-                line = self.lines.pop(0)  # Remove and ignore line.
+                self.input_line += 1 
+                self.lines.pop(0)  # Remove and ignore line.
                 continue
 
             # Else,
@@ -62,15 +65,15 @@ class Parser:
             # If loop ends, no lines remain.
             return False
 
-        
-
     def advance(self) -> None: 
         """
         Called only if `hasMoreCommands` is true.
         Reads from input and sets the new `current_command`.
+        Strips white space and comments
         """
-        self.current_line += 1
-        self.current_command = self.lines.pop(0).strip()
+        self.input_line += 1 
+        self.line_idx += 1
+        self.current_command = self.lines.pop(0).split('//')[0].strip()
 
     def command_type(self) -> CommandType:
         """
@@ -111,10 +114,9 @@ class Parser:
                 sym += char
 
             # If character is not allowed, raise error.
-            else:  raise ParseError(f"Invalid character in symbol or value on line {self.current_line}.", char)
+            else:  raise ParseError(f"Invalid character in symbol or value on line {self.input_line}.", char)
         
         return sym
-
 
     def __c_command_parser(self, char: str, idx: int) -> str:
         """

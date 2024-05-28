@@ -15,6 +15,6 @@ class ParseError(AssemblerError):
     """ An error raised in the process of parsing. """
 
 
-class SymbolicTable(AssemblerError):
+class SymbolicTableError(AssemblerError):
     """ An error raised in the symbolic table. """
 
