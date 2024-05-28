@@ -72,8 +72,10 @@ class Parser:
         Strips white space and comments
         """
         self.input_line += 1 
-        self.line_idx += 1
         self.current_command = self.lines.pop(0).split('//')[0].strip()
+
+        if self.command_type() != CommandType.L_COMMAND:
+            self.line_idx += 1
 
     def command_type(self) -> CommandType:
         """

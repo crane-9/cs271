@@ -7,7 +7,6 @@ import sys
 
 import asm_code as c
 from asm_parser import Parser, CommandType 
-import errors
 from symbolic_table import SymbolicTable
 
 
@@ -38,7 +37,7 @@ def first_pass() -> SymbolicTable:
             continue
 
         table.add_entry(parser.symbol(), parser.line_idx)
-        
+        print(parser.line_idx)
 
     return table
 
@@ -87,6 +86,8 @@ def main() -> None:
     """
     Runs a two-pass parsing routine, then prints the results to file.
     """
+    print(f"Parsing '{IN_PATH}'...")
+
     print("First pass...")
     table = first_pass()
 
